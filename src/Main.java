@@ -1,41 +1,78 @@
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.HashSet;
+import java.io.IOException;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.PrintStream;
+import java.text.DecimalFormat;
+import java.util.Arrays;
+
 public class Main {
+    private static List vacationRequests = new ArrayList<>();
+
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         int choice;
         do {
+            System.out.println("Меню:");
             System.out.println("---- Leave Management Menu ----");
-            System.out.println("1. Claimed leave");
-            System.out.println("2. See all holidays");
-            System.out.println("3. See employee leave");
-            System.out.println("4. Change leave status");
-            System.out.println("5. Exit");
+            System.out.println("1. Заяви отпуска");
+            System.out.println("2. Виж всички отпуски");
+            System.out.println("3. Виж отпуска за служител");
+            System.out.println("4. Промени статус на отпуска");
+            System.out.println("5. Изход");
             System.out.println("-------------------------------");
-            System.out.println("Enter your choice (1-5): ");
+            System.out.println("Въведи избрана опция(1-5): ");
             choice = input.nextInt();
 
             switch (choice) {
                 case 1:
-                    System.out.println();
+                    createVacationRequest();
                     break;
                 case 2:
-                    System.out.println();
+
                     break;
                 case 3:
-                    System.out.println();
+
                     break;
                 case 4:
-                    System.out.println();
+
                     break;
                 case 5:
-                    System.out.println();
+                    System.out.println("До виждане!");
                     break;
                 default:
-                    System.out.println();
+                    System.out.println("Няма такава опция. Опитайте отново.");
             }
         } while (choice != 5);
-        input.close();
+
+    }
+
+    private static void createVacationRequest(Scanner scanner) {
+        System.out.println("Заяви отпуска");
+        System.out.print("Име: ");
+        String name = scanner.nextLine();
+        System.out.print("Имейл: ");
+        String email = scanner.nextLine();
+        System.out.print("ЕГН: ");
+        String egn = scanner.nextLine();
+        System.out.print("Начална дата на отпуската (dd/MM/yyyy): ");
+        String startDate = scanner.nextLine();
+        System.out.print("Крайна дата на отпуската (dd/MM/yyyy): ");
+        String endDate = scanner.nextLine();
+        System.out.print("Тип на отпуската (платена/неплатена): ");
+        String vacationType = scanner.nextLine();
+
+        try {
+            VacationRequest vacationRequest = new VacationRequest(name, email, egn, startDate, endDate, vacationType);
+            vacationRequests.add(vacationRequest);
+            System.out.println("Заявката е създадена успешно!");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
