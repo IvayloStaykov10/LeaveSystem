@@ -1,78 +1,109 @@
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.HashSet;
-import java.io.IOException;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.PrintStream;
-import java.text.DecimalFormat;
-import java.util.Arrays;
 
 public class Main {
-    private static List vacationRequests = new ArrayList<>();
+    static ArrayList leaveRequests = new ArrayList<>();
 
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         int choice;
         do {
-            System.out.println("Меню:");
-            System.out.println("---- Leave Management Menu ----");
-            System.out.println("1. Заяви отпуска");
-            System.out.println("2. Виж всички отпуски");
-            System.out.println("3. Виж отпуска за служител");
-            System.out.println("4. Промени статус на отпуска");
-            System.out.println("5. Изход");
-            System.out.println("-------------------------------");
-            System.out.println("Въведи избрана опция(1-5): ");
-            choice = input.nextInt();
+            displayMenu();
+            choice = scanner.nextInt();
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
-                    createVacationRequest();
+                    makeLeaveRequest(scanner);
                     break;
                 case 2:
 
-                    break;
                 case 3:
 
-                    break;
                 case 4:
 
-                    break;
                 case 5:
-                    System.out.println("До виждане!");
+                    System.out.println("Изход.");
                     break;
                 default:
-                    System.out.println("Няма такава опция. Опитайте отново.");
+                    System.out.println("Няма такава опция. Моля въведете друга опция.");
+                    break;
             }
         } while (choice != 5);
-
+        scanner.close();
     }
 
-    private static void createVacationRequest(Scanner scanner) {
-        System.out.println("Заяви отпуска");
+    private static void displayMenu() {
+        System.out.println("-------Система-за-отпуски-------");
+        System.out.println("1. Заяви отпуска");
+        System.out.println("2. Виж всички отпуски");
+        System.out.println("3. Виж отпуска за служител");
+        System.out.println("4. Промени статус на отпуска");
+        System.out.println("5. Изход");
+        System.out.println("---------------------------------");
+        System.out.print("Въведи избор(1-5): ");
+    }
+
+    private static void makeLeaveRequest(Scanner scanner) {
         System.out.print("Име: ");
         String name = scanner.nextLine();
+
         System.out.print("Имейл: ");
         String email = scanner.nextLine();
+
         System.out.print("ЕГН: ");
         String egn = scanner.nextLine();
-        System.out.print("Начална дата на отпуската (dd/MM/yyyy): ");
+
+        System.out.print("Дата на начало на отпуската (dd/mm/yyyy): ");
         String startDate = scanner.nextLine();
-        System.out.print("Крайна дата на отпуската (dd/MM/yyyy): ");
+
+        System.out.print("Дата на край на отпуската (dd/mm/yyyy): ");
         String endDate = scanner.nextLine();
+
         System.out.print("Тип на отпуската (платена/неплатена): ");
         String vacationType = scanner.nextLine();
 
-        try {
-            VacationRequest vacationRequest = new VacationRequest(name, email, egn, startDate, endDate, vacationType);
-            vacationRequests.add(vacationRequest);
-            System.out.println("Заявката е създадена успешно!");
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+        LeaveRequest request = new LeaveRequest(name, email, egn, startDate, endDate, vacationType);
+        leaveRequests.add(request);
+
+        System.out.println("Отпуската е заявена успешно.");
+    }
+}
+
+class LeaveRequest {
+    private static int nextId = 1;
+    private int id;
+    private String name;
+    private String email;
+    private String egn;
+    private String startDate;
+    private String endDate;
+    private String vacationType;
+    private String status;
+
+    public LeaveRequest(String name, String email, String egn, String startDate, String endDate, String vacationType) {
+        this.id = nextId++;
+        this.name = name;
+        this.email = email;
+        this.egn = egn;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.vacationType = vacationType;
+        this.status = "pending";
+    }
+    public int getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
