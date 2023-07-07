@@ -17,7 +17,8 @@ public class Main {
                     makeLeaveRequest(scanner);
                     break;
                 case 2:
-
+                    displayAllLeaveRequests();
+                    break;
                 case 3:
 
                 case 4:
@@ -68,6 +69,19 @@ public class Main {
 
         System.out.println("Отпуската е заявена успешно.");
     }
+    private static void displayAllLeaveRequests() {
+        System.out.println("Всички отпуски:");
+        System.out.println("--------------------------------------------------");
+        System.out.println("| Номер | Име | Имейл | Статус |");
+        System.out.println("--------------------------------------------------");
+
+        for (int i = 0; i < leaveRequests.size(); i++) {
+            LeaveRequest request = (LeaveRequest) leaveRequests.get(i);
+            System.out.printf("| %-6d | %-8s | %-15s | %-8s |\n", (i + 1),request.getName() , request.getEmail(), request.getStatus());
+        }
+
+        System.out.println("--------------------------------------------------");
+    }
 }
 
 class LeaveRequest {
@@ -89,7 +103,7 @@ class LeaveRequest {
         this.startDate = startDate;
         this.endDate = endDate;
         this.vacationType = vacationType;
-        this.status = "pending";
+        this.status = "чакащ";
     }
     public int getId() {
         return id;
