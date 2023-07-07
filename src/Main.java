@@ -20,7 +20,8 @@ public class Main {
                     displayAllLeaveRequests();
                     break;
                 case 3:
-
+                    displayEmployeeLeaveRequests(scanner);
+                    break;
                 case 4:
 
                 case 5:
@@ -82,8 +83,25 @@ public class Main {
 
         System.out.println("--------------------------------------------------");
     }
-}
+    private static void displayEmployeeLeaveRequests(Scanner scanner) {
+        System.out.print("Име на служител: ");
+        String employeeName = scanner.nextLine();
 
+        System.out.println("Отпуски за служител " + employeeName + ":");
+        System.out.println("--------------------------------------------------");
+        System.out.println("| Номер | Име | Имейл | Статус |");
+        System.out.println("--------------------------------------------------");
+
+        for (int i = 0; i < leaveRequests.size(); i++) {
+            LeaveRequest request = (LeaveRequest) leaveRequests.get(i);
+            if (request.getName().equals(employeeName)) {
+                System.out.printf("| %-6d | %-8s | %-15s | %-8s |\n", (i+1), request.getName(), request.getEmail(), request.getStatus());
+            }
+        }
+
+        System.out.println("--------------------------------------------------");
+    }
+}
 class LeaveRequest {
     private static int nextId = 1;
     private int id;
