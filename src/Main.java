@@ -23,7 +23,8 @@ public class Main {
                     displayEmployeeLeaveRequests(scanner);
                     break;
                 case 4:
-
+                    changeLeaveStatus(scanner);
+                    break;
                 case 5:
                     System.out.println("Изход.");
                     break;
@@ -70,6 +71,7 @@ public class Main {
 
         System.out.println("Отпуската е заявена успешно.");
     }
+
     private static void displayAllLeaveRequests() {
         System.out.println("Всички отпуски:");
         System.out.println("--------------------------------------------------");
@@ -78,30 +80,50 @@ public class Main {
 
         for (int i = 0; i < leaveRequests.size(); i++) {
             LeaveRequest request = (LeaveRequest) leaveRequests.get(i);
-            System.out.printf("| %-6d | %-8s | %-15s | %-8s |\n", (i + 1),request.getName() , request.getEmail(), request.getStatus());
+            System.out.printf("| %-6d | %-8s | %-15s | %-8s |\n", (i + 1), request.getName(), request.getEmail(), request.getStatus());
         }
 
         System.out.println("--------------------------------------------------");
     }
+
     private static void displayEmployeeLeaveRequests(Scanner scanner) {
         System.out.print("Име на служител: ");
         String employeeName = scanner.nextLine();
-
         System.out.println("Отпуски за служител " + employeeName + ":");
         System.out.println("--------------------------------------------------");
         System.out.println("| Номер | Име | Имейл | Статус |");
         System.out.println("--------------------------------------------------");
-
         for (int i = 0; i < leaveRequests.size(); i++) {
             LeaveRequest request = (LeaveRequest) leaveRequests.get(i);
             if (request.getName().equals(employeeName)) {
-                System.out.printf("| %-6d | %-8s | %-15s | %-8s |\n", (i+1), request.getName(), request.getEmail(), request.getStatus());
+                System.out.printf("| %-6d | %-8s | %-15s | %-8s |\n", (i + 1), request.getName(), request.getEmail(), request.getStatus());
             }
         }
-
         System.out.println("--------------------------------------------------");
     }
+    private static void changeLeaveStatus(Scanner scanner) {
+        displayAllLeaveRequests();
+
+        System.out.print("Номер на заявка: ");
+        int requestNumber = scanner.nextInt();
+
+        if (requestNumber < 1 || requestNumber > leaveRequests.size()) {
+            System.out.println("Невалиден номер на заявка.");
+            return;
+        }
+
+        scanner.nextLine();
+
+        System.out.print("Нов статус (одобрена/отхвърлена/чакаща): ");
+        String newStatus = scanner.nextLine();
+
+        LeaveRequest request = (LeaveRequest) leaveRequests.get(requestNumber - 1);
+        request.setStatus(newStatus);
+
+        System.out.println("Статусът на заявката е променен успешно.");
+    }
 }
+
 class LeaveRequest {
     private static int nextId = 1;
     private int id;
@@ -121,20 +143,25 @@ class LeaveRequest {
         this.startDate = startDate;
         this.endDate = endDate;
         this.vacationType = vacationType;
-        this.status = "чакащ";
+        this.status = "чакаща";
     }
+
     public int getId() {
         return id;
     }
+
     public String getName() {
         return name;
     }
+
     public String getEmail() {
         return email;
     }
+
     public String getStatus() {
         return status;
     }
+
     public void setStatus(String status) {
         this.status = status;
     }
